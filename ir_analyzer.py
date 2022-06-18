@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw
 file_ignore = ["info.jpg", "shade.png"]
 
 # Extension des images traitées
-extension = "jpg"
+extension = "png"
 
 # Le délimitateur du fichier de sortie, mieux vaut ne pas toucher  : c'est par défaut une virgule
 csv_delimiter = ","
@@ -119,7 +119,7 @@ def sortFunction(e):
 
 # Calculer la température pour une couleur donnée
 def calculateTemp(color, leftBound, rightBound):
-    r, g, b = color
+    r, g, b ,d= color
     image = plt.imread(shade_file)
     height, width, dimension = image.shape
     # On parcourt le spectre à la recherche de la couleur correspondante
@@ -159,15 +159,18 @@ def gridWrite(fileName, imageTemps):
     outputName = "./grid_outputs/grid_" + fileName
     height = image_height
     width = image_width
-    img = Image.new(mode='L', size=(height, width), color=255)
-    # Draw some lines
+    img =  Image.open(fileName, "r")
+    # On dessine le quadrillage
     draw = ImageDraw.Draw(img)
     i = 0
-    for x in range(0, image_width, image_width // 3):
+    for x in horizontal_grid:
         line = ((x, 0), (x, height))
         draw.line(line, fill=128)
-        line = ((0, x), (height, x))
+    for y in vertical_grid:
+        line = (( 0,y), (height,y))
         draw.line(line, fill=128)
+    for x in range(0, image_width, image_width // 3):
+        
         draw.text((x + 15, height*0.1), imageTemps[i][0] + "\n" +
                   imageTemps[i][1], fill=15)
         draw.text((x + 15, height*0.4), imageTemps[i+1][0] + "\n" +
@@ -177,10 +180,11 @@ def gridWrite(fileName, imageTemps):
                   imageTemps[i+2][1], fill=15)
 
         i += 1
-    # save image
+    # On sauvegarde
     img.save(outputName)
-    # Pour effacer le fichier de sortie et rajouter la première ligne de description
 
+
+# Pour effacer le fichier de sortie et rajouter la première ligne de description
 
 def clearOutput():
     f = open(output, 'w')
@@ -207,11 +211,11 @@ for file in files:
     for cellname in dico.keys():
         # La couleur la plus présente dans la partie de l'image
         dominantColor = [
-            float(a) / 255.0 for a in eval(dico[cellname][0]["color"])]
+            float(a) for a in eval(dico[cellname][0]["color"])]
         # La couleur moyenne des couleurs code dégueu mais qui marche
         averageColor = dico[cellname]
         averageColor = [[
-            float(a) / 255.0 for a in eval(i["color"])]
+            float(a) for a in eval(i["color"])]
             for i in averageColor]
         averageColor = np.average(averageColor, axis=0)
 
