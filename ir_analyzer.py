@@ -152,9 +152,7 @@ def fileWrite(image_name, cell_name, cell_average_temp, cell_dominant_temp):
     file.writelines(lines)
     file.close()
 
-# On crée une image stylée
-
-
+# On génère des images contenant les températures des images
 def gridWrite(fileName, imageTemps):
     outputName = "./grid_outputs/grid_" + fileName
     height = image_height
@@ -169,17 +167,18 @@ def gridWrite(fileName, imageTemps):
     for y in vertical_grid:
         line = (( 0,y), (height,y))
         draw.line(line, fill=128)
+    # On écrit les textes
     for x in range(0, image_width, image_width // 3):
         
-        draw.text((x + 15, height*0.1), imageTemps[i][0] + "\n" +
-                  imageTemps[i][1], fill=15)
-        draw.text((x + 15, height*0.4), imageTemps[i+1][0] + "\n" +
-                  imageTemps[i+1][1], fill=15)
+        draw.text((width* 0.03, x + 15), imageTemps[i][0] + "\n" +
+                  imageTemps[i][1], fill= "white")
+        draw.text((width * 0.3,x + 15), imageTemps[i+1][0] + "\n" +
+                  imageTemps[i+1][1], fill= "white")
 
-        draw.text((x + 15, height*0.8), imageTemps[i+2][0] + "\n" +
-                  imageTemps[i+2][1], fill=15)
+        draw.text((width * 0.7, x + 15), imageTemps[i+2][0] + "\n" +
+                  imageTemps[i+2][1], fill= "white")
 
-        i += 1
+        i += 3
     # On sauvegarde
     img.save(outputName)
 
