@@ -84,7 +84,7 @@ def fileColorsScheme(fileName):
                               current_hline:next_hline]
 
             # Nom de la clé du dico correspondant à une cellule
-            cell_name = "("+str(cell_x)+";"+str(cell_y) + ")"
+            cell_name = "("+str(cell_y)+";"+str(cell_x) + ")"
             dico[cell_name] = []
 
             # On parcourt chaque pixel de la case étudiée
@@ -119,7 +119,7 @@ def sortFunction(e):
 
 # Calculer la température pour une couleur donnée
 def calculateTemp(color, leftBound, rightBound):
-    r, g, b ,d= color
+    r, g, b, d = color
     image = plt.imread(shade_file)
     height, width, dimension = image.shape
     # On parcourt le spectre à la recherche de la couleur correspondante
@@ -153,11 +153,13 @@ def fileWrite(image_name, cell_name, cell_average_temp, cell_dominant_temp):
     file.close()
 
 # On génère des images contenant les températures des images
+
+
 def gridWrite(fileName, imageTemps):
     outputName = "./grid_outputs/grid_" + fileName
     height = image_height
     width = image_width
-    img =  Image.open(fileName, "r")
+    img = Image.open(fileName, "r")
     # On dessine le quadrillage
     draw = ImageDraw.Draw(img)
     i = 0
@@ -165,18 +167,18 @@ def gridWrite(fileName, imageTemps):
         line = ((x, 0), (x, height))
         draw.line(line, fill=128)
     for y in vertical_grid:
-        line = (( 0,y), (height,y))
+        line = ((0, y), (height, y))
         draw.line(line, fill=128)
     # On écrit les textes
     for x in range(0, image_width, image_width // 3):
-        
-        draw.text((width* 0.03, x + 15), imageTemps[i][0] + "\n" +
-                  imageTemps[i][1], fill= "white")
-        draw.text((width * 0.3,x + 15), imageTemps[i+1][0] + "\n" +
-                  imageTemps[i+1][1], fill= "white")
+
+        draw.text((width * 0.03, x + 15), imageTemps[i][0] + "\n" +
+                  imageTemps[i][1], fill="white")
+        draw.text((width * 0.3, x + 15), imageTemps[i+1][0] + "\n" +
+                  imageTemps[i+1][1], fill="white")
 
         draw.text((width * 0.7, x + 15), imageTemps[i+2][0] + "\n" +
-                  imageTemps[i+2][1], fill= "white")
+                  imageTemps[i+2][1], fill="white")
 
         i += 3
     # On sauvegarde
@@ -190,7 +192,6 @@ def clearOutput():
     f.write("nom_fichier"+csv_delimiter +
             "nom_cellule"+csv_delimiter+"temperature_moyenne" + csv_delimiter + "temperature_dominante\n")
     f.close()
-
 
 
 # On cherche les images dans le dossier
@@ -212,10 +213,12 @@ for file in files:
         dominantColor = [
             float(a) for a in eval(dico[cellname][0]["color"])]
         # La couleur moyenne des couleurs code dégueu mais qui marche
-        averageColor = dico[cellname]
-        averageColor = [[
-            float(a) for a in eval(i["color"])]
-            for i in averageColor]
+        colorList = dico[cellname]
+        averageColor = []
+        for i in colorList:
+            for j in range(i["count"]):
+                averageColor.append([
+            float(a) for a in eval(i["color"])])
         averageColor = np.average(averageColor, axis=0)
 
         # La température pour la couleur la plus présente dans la cellule
