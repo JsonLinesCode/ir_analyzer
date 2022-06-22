@@ -20,12 +20,12 @@
         "right_bound": 44
     },
     "IR_2363.png": {
-        "left_bound": 28,
+        "left_bound": 29,
         "right_bound": 41
     },
     "IR_2364.png": {
-        "left_bound": 30,
-        "right_bound": 51
+        "left_bound": 28,
+        "right_bound": 36
     },
     "IR_2365.png": {
         "left_bound": 29,
@@ -50,9 +50,6 @@
     "IR_2370.png": {
         "left_bound": 26,
         "right_bound": 32
-    },
-    "IR_2371.png": {
-        "left_bound": 25,
-        "right_bound": 31
     }
+    
 }
